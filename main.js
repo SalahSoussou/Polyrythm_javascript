@@ -6,7 +6,7 @@ myCanvas.height = size;
 const trackCenter = { x: size / 2, y: size / 2 };
 const trackRadius = 100;
 const ballRadius = 10;
-const ballSpeed = 0.1;
+const ballSpeed = 0.05;
 
 const ctx = myCanvas.getContext("2d");
 class Track {
@@ -35,14 +35,19 @@ class Track {
 class Ball {
   constructor(track, radius, speed) {
     this.track = track;
-    this.speed = speed;
     this.radius = radius;
+    this.speed = speed;
     this.offset = 0;
+    this.direction = 1;
     this.center = this.track.getPosition(this.offset);
   }
   move() {
-    this.offset += this.speed;
+    this.offset += this.speed * this.direction;
     this.center = this.track.getPosition(this.offset);
+    if (this.center.y > this.track.center.y) {
+      this.direction *= -1;
+      playSound();
+    }
   }
   draw(ctx) {
     ctx.beginPath();
@@ -58,6 +63,13 @@ animate();
 
 function animate() {
   ctx.clearRect(0, 0, size, size);
+  // for (let i = 0; i < 5; i++) {
+  //   const track = new Track(trackCenter, trackRadius + i * 30);
+  //   const ball = new Ball(track, ballRadius, ballSpeed);
+  //   track.draw(ctx);
+  //   ball.move();
+  //   ball.draw(ctx);
+  // }
   track.draw(ctx);
   ball.move();
   ball.draw(ctx);
