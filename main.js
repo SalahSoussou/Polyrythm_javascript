@@ -1,11 +1,11 @@
 let myCanvas = document.getElementById("myCanvas");
-const size = 700;
+const size = 800;
 myCanvas.width = size;
 myCanvas.height = size;
 
 const trackCenter = { x: size / 2, y: size / 2 };
 let trackRadius = 100;
-const ballRadius = 10;
+const ballRadius = 8;
 const ballSpeed = 0.01;
 
 const soundFrequencies = [
