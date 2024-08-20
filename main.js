@@ -6,7 +6,7 @@ myCanvas.height = size;
 const trackCenter = { x: size / 2, y: size / 2 };
 const trackRadius = 100;
 const ballRadius = 10;
-const ballSpeed = 0.05;
+const ballSpeed = 0.01;
 
 const ctx = myCanvas.getContext("2d");
 class Track {
