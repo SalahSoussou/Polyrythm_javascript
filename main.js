@@ -1,10 +1,10 @@
 let myCanvas = document.getElementById("myCanvas");
 const size = 800;
 myCanvas.width = size;
-myCanvas.height = size;
+myCanvas.height = size / 2;
 
 const trackCenter = { x: size / 2, y: size / 2 };
-let trackRadius = 100;
+let trackRadius = 50;
 const ballRadius = 8;
 const ballSpeed = 0.01;
 
@@ -19,10 +19,11 @@ const N = 20;
 
 const ctx = myCanvas.getContext("2d");
 class Track {
-  constructor(center, radius) {
+  constructor(center, radius, hue) {
     this.center = center;
     this.radius = radius;
     this.period = Math.PI;
+    this.color = hue;
   }
   getPosition(offset) {
     return {
@@ -39,12 +40,13 @@ class Track {
     }
     ctx.closePath();
     // ctx.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2);
+    ctx.strokeStyle = `hsl(${this.color},100%,50%)`;
     ctx.stroke();
   }
 }
 
 class Ball {
-  constructor(track, radius, speed, sound) {
+  constructor(track, radius, speed, sound, hue) {
     this.track = track;
     this.radius = radius;
     this.speed = speed;
@@ -52,6 +54,7 @@ class Ball {
     this.sound = sound;
     this.round = 0;
     this.direction = 1;
+    this.color = hue;
     this.center = this.track.getPosition(this.offset);
   }
   move() {
@@ -67,17 +70,35 @@ class Ball {
     }
   }
   draw(ctx) {
-    ctx.beginPath();
-    ctx.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2);
-    ctx.stroke();
+    const fackY = 2 * this.track.center.y - this.center.y;
+    if (fackY > this.center.y) {
+      ctx.beginPath();
+      ctx.arc(this.center.x, this.center.y, this.radius, 0, Math.PI * 2);
+      // ctx.strokeStyl = `hsl(${this.color},100%,50%)`;
+
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.arc(this.center.x, fackY, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `hsl(${this.color},100%,50%)`;
+      ctx.stroke();
+      ctx.fill();
+    }
   }
 }
 
 for (let i = 0; i < N; i++) {
   const trackRadiu = trackRadius + i * 15;
-  const track = new Track(trackCenter, trackRadiu);
   const ballSound = soundFrequencies[i];
-  const ball = new Ball(track, ballRadius, ballSpeed + i * -0.0001, ballSound);
+  const hue = (i * 180) / N;
+  const track = new Track(trackCenter, trackRadiu, hue);
+  const ball = new Ball(
+    track,
+    ballRadius,
+    ballSpeed + i * -0.0001,
+    ballSound,
+    hue
+  );
   tracks.push(track);
   balls.push(ball);
 }
