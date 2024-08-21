@@ -1,6 +1,6 @@
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-function playSound(frequency, duration = 1) {
+function playSound(frequency, duration = 2) {
   const osc = audioCtx.createOscillator();
   const envelope = audioCtx.createGain();
   osc.connect(envelope);

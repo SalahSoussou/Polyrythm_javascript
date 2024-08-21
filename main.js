@@ -22,11 +22,13 @@ class Track {
   constructor(center, radius) {
     this.center = center;
     this.radius = radius;
+    this.period = Math.PI;
   }
   getPosition(offset) {
     return {
       x: this.center.x + Math.cos(offset) * this.radius,
       y: this.center.y - Math.sin(offset) * this.radius,
+      round: Math.floor(offset / this.period),
     };
   }
   draw(ctx) {
@@ -48,15 +50,20 @@ class Ball {
     this.speed = speed;
     this.offset = 0;
     this.sound = sound;
+    this.round = 0;
     this.direction = 1;
     this.center = this.track.getPosition(this.offset);
   }
   move() {
-    this.offset += this.speed * this.direction;
-    this.center = this.track.getPosition(this.offset);
-    if (this.center.y > this.track.center.y) {
-      this.direction *= -1;
+    this.offset += this.speed;
+    const res = this.track.getPosition(this.offset);
+    this.center = { x: res.x, y: res.y };
+    if (res.round != this.round) {
       playSound(this.sound);
+      this.round = res.round;
+      // if (this.center.y > this.track.center.y) {
+      //   this.direction *= -1;
+      // }
     }
   }
   draw(ctx) {
