@@ -90,7 +90,7 @@ class Ball {
 for (let i = 0; i < N; i++) {
   const trackRadiu = trackRadius + i * 15;
   const ballSound = soundFrequencies[i];
-  const hue = (i * 180) / N;
+  const hue = (i * 250) / N;
   const track = new Track(trackCenter, trackRadiu, hue);
   const ball = new Ball(
     track,
